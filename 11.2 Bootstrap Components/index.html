@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#173a32">
+  <meta name="description" content="A little field guide to thoughtful spellcraft. Browse simple spells and make a little magic of your own.">
+  <title>Magical Vibes | A Little Field Guide to Spellcraft</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #173a32;
+      --forest-deep: #102c27;
+      --paper: #f5f1e7;
+      --paper-light: #fffdf7;
+      --ink: #202821;
+      --muted: #68746b;
+      --copper: #c85c3b;
+      --line: #ded9ca;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper-light); color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
+    .sans { font-family: "Trebuchet MS", Verdana, sans-serif; }
+    .site-nav { background: var(--paper-light); border-bottom: 1px solid var(--line); }
+    .navbar-brand { color: var(--forest); font-size: 1.15rem; font-weight: 700; }
+    .brand-mark { color: var(--copper); font-size: 1.5rem; vertical-align: -1px; }
+    .nav-link { color: #4e5c53; font: 500 .9rem "Trebuchet MS", Verdana, sans-serif; }
+    .nav-link:hover, .nav-link:focus { color: var(--copper); }
+    .hero { position: relative; overflow: hidden; background: var(--forest); color: var(--paper-light); }
+    .hero::before, .hero::after { position: absolute; content: ""; border: 1px solid rgb(245 241 231 / 12%); border-radius: 50%; pointer-events: none; }
+    .hero::before { width: 38rem; height: 38rem; right: -13rem; top: -21rem; }
+    .hero::after { width: 28rem; height: 28rem; right: -8rem; top: -16rem; }
+    .hero-content { position: relative; z-index: 1; }
+    .hero .row { min-height: 36rem; }
+    .eyebrow, .section-kicker { font: 700 .72rem "Trebuchet MS", Verdana, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+    .eyebrow { color: #e9ad82; }
+    .hero h1 { max-width: 11ch; margin: 1rem 0; font-size: clamp(3rem, 7vw, 5.6rem); font-weight: 400; line-height: .98; }
+    .hero-copy { max-width: 34rem; color: #d5ded5; font: 1.05rem/1.75 "Trebuchet MS", Verdana, sans-serif; }
+    .hero-art { position: relative; display: grid; min-height: 22rem; place-items: center; }
+    .sigil { position: absolute; width: min(27rem, 90%); aspect-ratio: 1; border: 1px solid rgb(237 213 165 / 45%); border-radius: 50%; }
+    .sigil::before, .sigil::after { position: absolute; content: ""; inset: 1.2rem; border: 1px solid rgb(237 213 165 / 30%); border-radius: 50%; }
+    .sigil::after { inset: 3.4rem; border-style: dashed; }
+    .hero-art img { position: relative; z-index: 1; width: min(13rem, 54%); height: auto; max-height: 15rem; object-fit: contain; filter: drop-shadow(0 1rem 2rem rgb(0 0 0 / 22%)); }
+    .button-copper { --bs-btn-color: white; --bs-btn-bg: var(--copper); --bs-btn-border-color: var(--copper); --bs-btn-hover-color: white; --bs-btn-hover-bg: #ad482e; --bs-btn-hover-border-color: #ad482e; font-family: "Trebuchet MS", Verdana, sans-serif; }
+    .section-kicker { color: var(--copper); }
+    .section-title { color: var(--forest); font-size: clamp(2rem, 4vw, 3.15rem); font-weight: 400; }
+    .intro { max-width: 43rem; color: var(--muted); font: 1rem/1.75 "Trebuchet MS", Verdana, sans-serif; }
+    .search-wrap { width: min(100%, 22rem); }
+    .search-wrap .form-control { border-color: #cbc5b5; background: var(--paper-light); font-family: "Trebuchet MS", Verdana, sans-serif; }
+    .spell-section { background: var(--paper); }
+    .spell-entry[hidden] { display: none !important; }
+    .spell-card { height: 100%; padding: 1.65rem; border: 1px solid var(--line); border-radius: 4px; background: var(--paper-light); }
+    .spell-number { color: var(--copper); font: 700 .72rem "Trebuchet MS", Verdana, sans-serif; letter-spacing: .1em; }
+    .spell-card h3 { margin: .8rem 0 .55rem; color: var(--forest); font-size: 1.65rem; font-weight: 400; }
+    .spell-card p, .spell-card details { color: var(--muted); font: .92rem/1.65 "Trebuchet MS", Verdana, sans-serif; }
+    .spell-card details { margin-top: 1rem; padding-top: .85rem; border-top: 1px solid var(--line); }
+    .spell-card summary { color: var(--forest); cursor: pointer; font-weight: 700; }
+    .spell-card details p { margin: .7rem 0 0; }
+    .empty-state { display: none; color: var(--muted); font: .95rem "Trebuchet MS", Verdana, sans-serif; }
+    .practice { background: #e7e8db; }
+    .practice-note { border-left: 2px solid var(--copper); padding-left: 1.2rem; color: #536057; font: 1rem/1.8 "Trebuchet MS", Verdana, sans-serif; }
+    footer { background: var(--forest-deep); color: #d5ded5; font: .84rem "Trebuchet MS", Verdana, sans-serif; }
+    footer a { color: #f0b48a; text-decoration: none; }
+    footer a:hover { color: white; }
+
+    @media (max-width: 767.98px) {
+      .hero .row { min-height: 0; }
+      .hero h1 { max-width: 9ch; }
+      .hero-art { min-height: 17rem; }
+      .sigil { width: min(20rem, 85%); }
+      .hero-art img { width: min(10rem, 48%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg site-nav sticky-top" aria-label="Main navigation">
+    <div class="container py-2">
+      <a class="navbar-brand" href="#home"><span class="brand-mark" aria-hidden="true">✳</span> Magical Vibes</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#grimoire">The grimoire</a></li>
+          <li class="nav-item"><a class="nav-link" href="#practice">Practice</a></li>
+          <li class="nav-item ms-lg-2"><a class="btn button-copper btn-sm px-3" href="#grimoire">Find a spell <span aria-hidden="true">↗</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-content py-5 py-lg-0">
+        <div class="row align-items-center py-lg-5">
+          <div class="col-lg-6 py-4 py-lg-5">
+            <p class="eyebrow mb-3">A little field guide to spellcraft</p>
+            <h1>Make room for a little magic.</h1>
+            <p class="hero-copy mb-4">Start with a quiet intention, a few familiar things, and a spell that feels like yours. The best magic begins with paying attention.</p>
+            <div class="d-flex flex-wrap gap-3">
+              <a class="btn button-copper btn-lg px-4" href="#grimoire">Explore the grimoire <span aria-hidden="true">→</span></a>
+              <a class="btn btn-outline-light btn-lg px-4" href="#practice">A note on practice</a>
+            </div>
+            <p class="mt-4 mb-0 sans small text-white-50">Simple rituals for curious minds. No experience needed.</p>
+          </div>
+          <div class="col-lg-6">
+            <div class="hero-art" aria-label="A magical emblem framed by a hand-drawn circle">
+              <div class="sigil" aria-hidden="true"></div>
+              <img src="./majic.png" alt="A small magical emblem" width="208" height="165">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container py-5" id="grimoire">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-4 mb-4 mb-lg-5">
+        <div>
+          <p class="section-kicker mb-2">Choose your starting point</p>
+          <h2 class="section-title mb-2">From the grimoire</h2>
+          <p class="intro mb-0">Small, thoughtful rituals for the moments that call for a little extra care.</p>
+        </div>
+        <div class="search-wrap">
+          <label class="form-label sans small fw-semibold" for="spell-search">Search the spells</label>
+          <input class="form-control" id="spell-search" type="search" placeholder="Try “light” or “focus”" aria-describedby="search-status">
+          <span class="visually-hidden" id="search-status" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="row g-3 g-lg-4" id="spell-list">
+        <article class="col-md-6 col-lg-4 spell-entry" data-search="light candle clarity calm evening">
+          <div class="spell-card">
+            <span class="spell-number">01 / CLARITY</span>
+            <h3>Light the way</h3>
+            <p>A candle ritual for clearing a little space to think when the day feels crowded.</p>
+            <details><summary>Read the ritual</summary><p>Set a candle somewhere safe. Take three slow breaths, name one thing you can let go of for now, then light the wick. Sit with the quiet for a minute.</p></details>
+          </div>
+        </article>
+        <article class="col-md-6 col-lg-4 spell-entry" data-search="lost find memory patience focus object">
+          <div class="spell-card">
+            <span class="spell-number">02 / FOCUS</span>
+            <h3>Find what’s lost</h3>
+            <p>A gentle reset for when a missing thing has taken over your attention.</p>
+            <details><summary>Read the ritual</summary><p>Pause where you are. Picture the last moment you remember having the item, then retrace your steps slowly, checking one place at a time. Let patience do the searching.</p></details>
+          </div>
+        </article>
+        <article class="col-md-6 col-lg-4 spell-entry" data-search="return home grounding transition journey protection">
+          <div class="spell-card">
+            <span class="spell-number">03 / GROUNDING</span>
+            <h3>Circle of return</h3>
+            <p>A simple end-of-day practice to mark the shift from doing to being home.</p>
+            <details><summary>Read the ritual</summary><p>At your doorway, leave your shoes for a breath. Notice the ground beneath you, name one thing you’re grateful to leave outside, and step in with intention.</p></details>
+          </div>
+        </article>
+      </div>
+      <p class="empty-state mt-4 mb-0" id="empty-state">No spells found. Try another word from the grimoire.</p>
+    </section>
+
+    <section class="practice py-5" id="practice">
+      <div class="container py-2 py-lg-4">
+        <div class="row align-items-center g-4 g-lg-5">
+          <div class="col-lg-5">
+            <p class="section-kicker mb-2">A good place to begin</p>
+            <h2 class="section-title mb-0">Keep the magic your own.</h2>
+          </div>
+          <div class="col-lg-7">
+            <p class="practice-note mb-0">A ritual can be a useful moment to pause, focus, and make meaning. Start small, adapt what you find here, and keep what feels right to you. Be mindful around candles, plants, and anything you might ingest.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-4">
+    <div class="container d-flex flex-column flex-sm-row justify-content-between gap-2">
+      <span>✳ Magical Vibes</span>
+      <span>A little wonder for the everyday. <a href="#home">Back to top ↑</a></span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script>
+    const searchInput = document.querySelector("#spell-search");
+    const spellEntries = [...document.querySelectorAll(".spell-entry")];
+    const emptyState = document.querySelector("#empty-state");
+    const searchStatus = document.querySelector("#search-status");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      spellEntries.forEach((entry) => {
+        const matches = entry.dataset.search.includes(query);
+        entry.hidden = !matches;
+        visibleCount += Number(matches);
+      });
+
+      emptyState.style.display = visibleCount ? "none" : "block";
+      searchStatus.textContent = `${visibleCount} ${visibleCount === 1 ? "spell" : "spells"} found`;
+    });
+  </script>
+</body>
+
+</html>
